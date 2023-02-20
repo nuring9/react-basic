@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "title": "dsf",
+      "body": "dsf",
+      "createdAt": 1676913656848,
+      "id": 1
+    },
+    {
+      "title": "aaa",
+      "body": "vvvv",
+      "createdAt": 1676913674959,
+      "id": 2
+    }
+  ]
+}
