@@ -1,9 +1,12 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
-import Card from "../components/Card";
-import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "../components/LoadingSpinner";
 import PropTypes from "prop-types";
+
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import LoadingSpinner from "../components/LoadingSpinner";
+import Card from "../components/Card";
+import Pagination from "./Pagination";
 
 const BlogList = ({ isAdmin }) => {
   const navigate = useNavigate();
@@ -37,30 +40,39 @@ const BlogList = ({ isAdmin }) => {
     return <div>"No blog posts found"</div>;
   }
 
-  return posts
-    .filter((post) => {
-      return isAdmin || post.publish;
-    })
-    .map((post) => {
-      return (
-        <Card
-          key={post.id}
-          title={post.title}
-          onClick={() => navigate(`/blogs/${post.id}`)}
-        >
-          {isAdmin ? (
-            <div>
-              <button
-                className="btn btn-danger btn-sm"
-                onClick={(e) => deleteBlog(e, post.id)}
-              >
-                Delete
-              </button>
-            </div>
-          ) : null}
-        </Card>
-      );
-    });
+  const renderBlogList = () => {
+    return posts
+      .filter((post) => {
+        return isAdmin || post.publish;
+      })
+      .map((post) => {
+        return (
+          <Card
+            key={post.id}
+            title={post.title}
+            onClick={() => navigate(`/blogs/${post.id}`)}
+          >
+            {isAdmin ? (
+              <div>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={(e) => deleteBlog(e, post.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            ) : null}
+          </Card>
+        );
+      });
+  };
+
+  return (
+    <div>
+      {renderBlogList()}
+      <Pagination />
+    </div>
+  );
 };
 
 BlogList.propTypes = {
