@@ -13,8 +13,10 @@ const BlogList = ({ isAdmin }) => {
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const getPosts = (page = 1) => {
+    setCurrentPage(page);
     let params = {
       _page: page,
       _limit: 5,
@@ -81,7 +83,11 @@ const BlogList = ({ isAdmin }) => {
   return (
     <div>
       {renderBlogList()}
-      <Pagination currentPage={3} numberOfPage={5} />
+      <Pagination
+        currentPage={currentPage}
+        numberOfPage={5}
+        onClick={getPosts}
+      />
     </div>
   );
 };
