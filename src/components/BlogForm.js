@@ -8,14 +8,25 @@ const BlogForm = ({ editing }) => {
   const { id } = useParams();
 
   const [title, setTitle] = useState("");
+  const [originalTitle, setOriginalTitle] = useState("");
+
   const [body, setBody] = useState("");
+  const [originalBody, setOriginalBody] = useState("");
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/posts/${id}`).then((res) => {
-      setTitle(res.data.title);
-      setBody(res.data.body);
-    });
-  }, [id]);
+    if (editing) {
+      axios.get(`http://localhost:3001/posts/${id}`).then((res) => {
+        setTitle(res.data.title);
+        setOriginalTitle(res.data.title);
+        setBody(res.data.body);
+        setOriginalBody(res.data.body);
+      });
+    }
+  }, [id, editing]);
+
+  const isEdited = () => {
+    return title !== originalTitle || body !== originalBody;
+  };
 
   const onSubmit = () => {
     if (editing) {
@@ -24,7 +35,7 @@ const BlogForm = ({ editing }) => {
           title,
           body,
         })
-        .then((res) => console.log(res));
+        .then((res) => navigate(`/blogs/${id}`));
     } else {
       axios
         .post("http://localhost:3001/posts", {
@@ -62,7 +73,11 @@ const BlogForm = ({ editing }) => {
           row="10"
         />
       </div>
-      <button className="btn btn-primary" onClick={onSubmit}>
+      <button
+        className="btn btn-primary"
+        onClick={onSubmit}
+        disabled={editing && !isEdited()}
+      >
         {editing ? "Edit" : "Post"}
       </button>
     </div>
