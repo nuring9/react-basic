@@ -13,6 +13,9 @@ const BlogForm = ({ editing }) => {
   const [body, setBody] = useState("");
   const [originalBody, setOriginalBody] = useState("");
 
+  const [publish, setPublish] = useState(false);
+  const [originalPublish, setOriginalPublish] = useState(false);
+
   useEffect(() => {
     if (editing) {
       axios.get(`http://localhost:3001/posts/${id}`).then((res) => {
@@ -20,12 +23,30 @@ const BlogForm = ({ editing }) => {
         setOriginalTitle(res.data.title);
         setBody(res.data.body);
         setOriginalBody(res.data.body);
+        setPublish(res.data.publish);
+        setOriginalPublish(res.data.publish);
       });
     }
   }, [id, editing]);
 
   const isEdited = () => {
-    return title !== originalTitle || body !== originalBody;
+    return (
+      title !== originalTitle ||
+      body !== originalBody ||
+      publish !== originalPublish
+    );
+  };
+
+  const goBack = () => {
+    if (editing) {
+      navigate(`/blogs/${id}`);
+    } else {
+      navigate("/blogs");
+    }
+  };
+
+  const onChangePublish = (e) => {
+    setPublish(e.target.checked);
   };
 
   const onSubmit = () => {
@@ -34,6 +55,7 @@ const BlogForm = ({ editing }) => {
         .patch(`http://localhost:3001/posts/${id}`, {
           title,
           body,
+          publish,
         })
         .then((res) => navigate(`/blogs/${id}`));
     } else {
@@ -42,6 +64,7 @@ const BlogForm = ({ editing }) => {
           title,
           body,
           createdAt: Date.now(),
+          publish,
         })
         .then((res) => {
           navigate("/blogs");
@@ -73,12 +96,25 @@ const BlogForm = ({ editing }) => {
           row="10"
         />
       </div>
+      <div className="form-check mb-3">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          checked={publish}
+          onChange={onChangePublish}
+        />
+        <label className="from-check-label">Publish</label>
+      </div>
+
       <button
         className="btn btn-primary"
         onClick={onSubmit}
         disabled={editing && !isEdited()}
       >
         {editing ? "Edit" : "Post"}
+      </button>
+      <button className="btn btn-danger ms-3" onClick={goBack}>
+        Cancel
       </button>
     </div>
   );

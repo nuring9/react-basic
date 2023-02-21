@@ -1,22 +1,18 @@
 {
   "posts": [
     {
-      "title": "dsfsdf",
-      "body": "dsfsdfddd",
-      "createdAt": 1676913656848,
+      "title": "aa",
+      "body": "aaa",
+      "createdAt": 1676961319643,
+      "publish": true,
       "id": 1
     },
     {
-      "title": "sdf",
-      "body": "asdf",
-      "createdAt": 1676955759088,
-      "id": 3
-    },
-    {
-      "title": "aaabb",
-      "body": "bbbccdd",
-      "createdAt": 1676955779697,
-      "id": 4
+      "title": "bb",
+      "body": "bb",
+      "createdAt": 1676961325695,
+      "publish": false,
+      "id": 2
     }
   ]
 }
