@@ -13,13 +13,22 @@ const BlogList = ({ isAdmin }) => {
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [numberOfPosts, setNumberOfPosts] = useState(0);
+  const [numberOfPages, setNumberOfPages] = useState(0);
+
+  const limit = 5;
+
+  useEffect(() => {
+    setNumberOfPages(Math.ceil(numberOfPosts / limit));
+  }, [numberOfPosts]);
 
   const getPosts = (page = 1) => {
     setCurrentPage(page);
     let params = {
       _page: page,
-      _limit: 5,
+      _limit: limit,
       _sort: "id",
       _order: "desc",
     };
@@ -33,6 +42,7 @@ const BlogList = ({ isAdmin }) => {
         params,
       })
       .then((res) => {
+        setNumberOfPosts(res.headers["x-total-count"]);
         setPosts(res.data);
         setLoading(false);
       });
@@ -83,11 +93,13 @@ const BlogList = ({ isAdmin }) => {
   return (
     <div>
       {renderBlogList()}
-      <Pagination
-        currentPage={currentPage}
-        numberOfPage={5}
-        onClick={getPosts}
-      />
+      {numberOfPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          numberOfPage={numberOfPages}
+          onClick={getPosts}
+        />
+      )}
     </div>
   );
 };
