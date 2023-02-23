@@ -18,7 +18,7 @@ const BlogList = ({ isAdmin }) => {
   const [numberOfPosts, setNumberOfPosts] = useState(0);
   const [numberOfPages, setNumberOfPages] = useState(0);
 
-  const limit = 5;
+  const limit = 1;
 
   useEffect(() => {
     setNumberOfPages(Math.ceil(numberOfPosts / limit));
