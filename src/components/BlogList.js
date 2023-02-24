@@ -1,7 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -31,33 +31,36 @@ const BlogList = ({ isAdmin }) => {
     navigate(`${location.pathname}?page=${page}`);
     getPosts(page);
   };
-  const getPosts = (page = 1) => {
-    let params = {
-      _page: page,
-      _limit: limit,
-      _sort: "id",
-      _order: "desc",
-    };
+  const getPosts = useCallback(
+    (page = 1) => {
+      let params = {
+        _page: page,
+        _limit: limit,
+        _sort: "id",
+        _order: "desc",
+      };
 
-    if (!isAdmin) {
-      params = { ...params, publish: true };
-    }
+      if (!isAdmin) {
+        params = { ...params, publish: true };
+      }
 
-    axios
-      .get(`http://localhost:3001/posts`, {
-        params,
-      })
-      .then((res) => {
-        setNumberOfPosts(res.headers["x-total-count"]);
-        setPosts(res.data);
-        setLoading(false);
-      });
-  };
+      axios
+        .get(`http://localhost:3001/posts`, {
+          params,
+        })
+        .then((res) => {
+          setNumberOfPosts(res.headers["x-total-count"]);
+          setPosts(res.data);
+          setLoading(false);
+        });
+    },
+    [isAdmin]
+  );
 
   useEffect(() => {
     setCurrentPage(parseInt(pageParam) || 1);
     getPosts(parseInt(pageParam) || 1);
-  }, [pageParam]);
+  }, [pageParam, getPosts]);
 
   const deleteBlog = (e, id) => {
     e.stopPropagation();
