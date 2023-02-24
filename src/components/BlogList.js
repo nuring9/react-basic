@@ -2,7 +2,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import LoadingSpinner from "../components/LoadingSpinner";
 import Card from "../components/Card";
@@ -10,6 +10,9 @@ import Pagination from "./Pagination";
 
 const BlogList = ({ isAdmin }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const pageParam = params.get("page");
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,14 +21,17 @@ const BlogList = ({ isAdmin }) => {
   const [numberOfPosts, setNumberOfPosts] = useState(0);
   const [numberOfPages, setNumberOfPages] = useState(0);
 
-  const limit = 1;
+  const limit = 5;
 
   useEffect(() => {
     setNumberOfPages(Math.ceil(numberOfPosts / limit));
   }, [numberOfPosts]);
 
+  const onClickPageButton = (page) => {
+    navigate(`${location.pathname}?page=${page}`);
+    getPosts(page);
+  };
   const getPosts = (page = 1) => {
-    setCurrentPage(page);
     let params = {
       _page: page,
       _limit: limit,
@@ -48,16 +54,17 @@ const BlogList = ({ isAdmin }) => {
       });
   };
 
+  useEffect(() => {
+    setCurrentPage(parseInt(pageParam) || 1);
+    getPosts(parseInt(pageParam) || 1);
+  }, [pageParam]);
+
   const deleteBlog = (e, id) => {
     e.stopPropagation();
     axios.delete(`http://localhost:3001/posts/${id}`).then((res) => {
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
     });
   };
-
-  useEffect(() => {
-    getPosts();
-  }, []);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -96,8 +103,8 @@ const BlogList = ({ isAdmin }) => {
       {numberOfPages > 1 && (
         <Pagination
           currentPage={currentPage}
-          numberOfPage={numberOfPages}
-          onClick={getPosts}
+          numberOfPages={numberOfPages}
+          onClick={onClickPageButton}
         />
       )}
     </div>
