@@ -1,7 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -9,7 +9,7 @@ import Card from "../components/Card";
 import Pagination from "./Pagination";
 
 import Toast from "./Toast";
-import { v4 as uuidv4 } from "uuid";
+import useToast from "../hooks/toast";
 
 const BlogList = ({ isAdmin }) => {
   const navigate = useNavigate();
@@ -26,9 +26,7 @@ const BlogList = ({ isAdmin }) => {
 
   const [searchText, setSearchText] = useState("");
 
-  // const [toasts, setToasts] = useState([]);
-  const toasts = useRef([]);
-  const [toastsRerender, setToastsRerender] = useState(false);
+  const [toasts, addToast, deleteToast] = useToast();
 
   const limit = 5;
 
@@ -73,31 +71,6 @@ const BlogList = ({ isAdmin }) => {
     setCurrentPage(parseInt(pageParam) || 1);
     getPosts(parseInt(pageParam) || 1);
   }, []);
-
-  const deleteToast = (id) => {
-    const filteredToasts = toasts.current.filter((toast) => {
-      return toast.id !== id; // id가 다를 경우에만 남겨두고, 같은 경우에만 삭제
-    });
-    toasts.current = filteredToasts;
-    // setToasts(filteredToasts);
-    setToastsRerender((prev) => !prev);
-  };
-
-  const addToast = (toast) => {
-    const id = uuidv4();
-    const toastWithId = {
-      ...toast,
-      id, // id: id
-    };
-
-    toasts.current = [...toasts.current, toastWithId];
-    // setToasts((prev) => [...prev, toastWithId]);
-    setToastsRerender((prev) => !prev);
-
-    setTimeout(() => {
-      deleteToast(id);
-    }, 5000);
-  };
 
   const deleteBlog = (e, id) => {
     e.stopPropagation();
@@ -147,7 +120,7 @@ const BlogList = ({ isAdmin }) => {
 
   return (
     <div>
-      <Toast toasts={toasts.current} deleteToast={deleteToast} />
+      <Toast toasts={toasts} deleteToast={deleteToast} />
       <input
         type="text"
         placeholder="Search.."

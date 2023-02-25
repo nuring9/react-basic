@@ -1,13 +1,15 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
-import { v4 as uuidv4 } from "uuid";
 import Toast from "./Toast";
 
+import useToast from "../hooks/toast";
+
 const BlogForm = ({ editing }) => {
+  const [toasts, addToast, deleteToast] = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -22,10 +24,6 @@ const BlogForm = ({ editing }) => {
 
   const [titleError, setTitleError] = useState(false);
   const [bodyError, setBodyError] = useState(false);
-
-  // const [toasts, setToasts] = useState([]);
-  const toasts = useRef([]);
-  const [toastsRerender, setToastsRerender] = useState(false);
 
   useEffect(() => {
     if (editing) {
@@ -76,31 +74,6 @@ const BlogForm = ({ editing }) => {
     return validated;
   };
 
-  const deleteToast = (id) => {
-    const filteredToasts = toasts.current.filter((toast) => {
-      return toast.id !== id; // id가 다를 경우에만 남겨두고, 같은 경우에만 삭제
-    });
-    toasts.current = filteredToasts;
-    // setToasts(filteredToasts);
-    setToastsRerender((prev) => !prev);
-  };
-
-  const addToast = (toast) => {
-    const id = uuidv4();
-    const toastWithId = {
-      ...toast,
-      id, // id: id
-    };
-
-    toasts.current = [...toasts.current, toastWithId];
-    // setToasts((prev) => [...prev, toastWithId]);
-    setToastsRerender((prev) => !prev);
-
-    setTimeout(() => {
-      deleteToast(id);
-    }, 5000);
-  };
-
   const onSubmit = () => {
     setTitleError(false);
     setBodyError(false);
@@ -134,7 +107,7 @@ const BlogForm = ({ editing }) => {
 
   return (
     <div>
-      <Toast toasts={toasts.current} deleteToast={deleteToast} />
+      <Toast toasts={toasts} deleteToast={deleteToast} />
       <h1>{editing ? "Edit" : "Create"} a blog post</h1>
       <div className="mb-3">
         <label className="form-label">Title</label>
