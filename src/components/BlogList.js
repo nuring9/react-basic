@@ -1,7 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -26,7 +26,9 @@ const BlogList = ({ isAdmin }) => {
 
   const [searchText, setSearchText] = useState("");
 
-  const [toasts, setToasts] = useState([]);
+  // const [toasts, setToasts] = useState([]);
+  const toasts = useRef([]);
+  const [toastsRerender, setToastsRerender] = useState(false);
 
   const limit = 5;
 
@@ -72,19 +74,29 @@ const BlogList = ({ isAdmin }) => {
     getPosts(parseInt(pageParam) || 1);
   }, []);
 
-  const addToast = (toast) => {
-    const toastWithId = {
-      ...toast,
-      id: uuidv4(),
-    };
-    setToasts((prev) => [...prev, toastWithId]);
-  };
-
   const deleteToast = (id) => {
-    const filteredToasts = toasts.filter((toast) => {
+    const filteredToasts = toasts.current.filter((toast) => {
       return toast.id !== id; // id가 다를 경우에만 남겨두고, 같은 경우에만 삭제
     });
-    setToasts(filteredToasts);
+    toasts.current = filteredToasts;
+    // setToasts(filteredToasts);
+    setToastsRerender((prev) => !prev);
+  };
+
+  const addToast = (toast) => {
+    const id = uuidv4();
+    const toastWithId = {
+      ...toast,
+      id, // id: id
+    };
+
+    toasts.current = [...toasts.current, toastWithId];
+    // setToasts((prev) => [...prev, toastWithId]);
+    setToastsRerender((prev) => !prev);
+
+    setTimeout(() => {
+      deleteToast(id);
+    }, 5000);
   };
 
   const deleteBlog = (e, id) => {
@@ -135,7 +147,7 @@ const BlogList = ({ isAdmin }) => {
 
   return (
     <div>
-      <Toast toasts={toasts} deleteToast={deleteToast} />
+      <Toast toasts={toasts.current} deleteToast={deleteToast} />
       <input
         type="text"
         placeholder="Search.."
