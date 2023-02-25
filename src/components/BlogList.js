@@ -7,7 +7,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Card from "../components/Card";
 import Pagination from "./Pagination";
+
 import Toast from "./Toast";
+import { v4 as uuidv4 } from "uuid";
 
 const BlogList = ({ isAdmin }) => {
   const navigate = useNavigate();
@@ -23,6 +25,8 @@ const BlogList = ({ isAdmin }) => {
   const [numberOfPages, setNumberOfPages] = useState(0);
 
   const [searchText, setSearchText] = useState("");
+
+  const [toasts, setToasts] = useState([]);
 
   const limit = 5;
 
@@ -68,10 +72,29 @@ const BlogList = ({ isAdmin }) => {
     getPosts(parseInt(pageParam) || 1);
   }, []);
 
+  const addToast = (toast) => {
+    const toastWithId = {
+      ...toast,
+      id: uuidv4(),
+    };
+    setToasts((prev) => [...prev, toastWithId]);
+  };
+
+  const deleteToast = (id) => {
+    const filteredToasts = toasts.filter((toast) => {
+      return toast.id !== id; // id가 다를 경우에만 남겨두고, 같은 경우에만 삭제
+    });
+    setToasts(filteredToasts);
+  };
+
   const deleteBlog = (e, id) => {
     e.stopPropagation();
     axios.delete(`http://localhost:3001/posts/${id}`).then((res) => {
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+      addToast({
+        text: "Successfully deleted",
+        type: "success",
+      });
     });
   };
 
@@ -112,12 +135,7 @@ const BlogList = ({ isAdmin }) => {
 
   return (
     <div>
-      <Toast
-        toasts={[
-          { text: "error", type: "danger" },
-          { text: "success", type: "success" },
-        ]}
-      />
+      <Toast toasts={toasts} deleteToast={deleteToast} />
       <input
         type="text"
         placeholder="Search.."
