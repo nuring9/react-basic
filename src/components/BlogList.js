@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Card from "../components/Card";
 import Pagination from "./Pagination";
+import Toast from "./Toast";
 
 const BlogList = ({ isAdmin }) => {
   const navigate = useNavigate();
@@ -111,6 +112,12 @@ const BlogList = ({ isAdmin }) => {
 
   return (
     <div>
+      <Toast
+        toasts={[
+          { text: "error", type: "danger" },
+          { text: "success", type: "success" },
+        ]}
+      />
       <input
         type="text"
         placeholder="Search.."
