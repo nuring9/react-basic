@@ -7,12 +7,6 @@ const useToast = () => {
   const dispatch = useDispatch();
 
   const deleteToast = (id) => {
-    // const filteredToasts = toasts.current.filter((toast) => {
-    //   return toast.id !== id;
-    // });
-    // toasts.current = filteredToasts;
-
-    // setToastsRerender((prev) => !prev);
     dispatch(removeToasts(id));
   };
 
@@ -20,12 +14,10 @@ const useToast = () => {
     const id = uuidv4();
     const toastWithId = {
       ...toast,
-      id, // id: id
+      id,
     };
 
     dispatch(add(toastWithId));
-    // toasts.current = [...toasts.current, toastWithId];
-    // setToastsRerender((prev) => !prev);
 
     setTimeout(() => {
       deleteToast(id);

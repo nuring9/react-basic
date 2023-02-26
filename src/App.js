@@ -16,7 +16,6 @@ function App() {
       <div className="container mt-3">
         <Routes>
           {routes.map((route) => {
-            // const Component = route.element;
             return (
               <Route
                 key={route.path}
