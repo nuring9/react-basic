@@ -6,6 +6,8 @@ import Toast from "./components/Toast";
 import useToast from "./hooks/toast";
 import { useSelector } from "react-redux";
 
+import ProtectedRoute from "./ProtectedRoute";
+
 function App() {
   const toasts = useSelector((state) => state.toast.toasts);
   const { deleteToast } = useToast();
@@ -20,8 +22,14 @@ function App() {
               <Route
                 key={route.path}
                 path={route.path}
-                element={route.element}
-              ></Route>
+                element={
+                  route.auth ? (
+                    <ProtectedRoute element={route.element} />
+                  ) : (
+                    route.element
+                  )
+                }
+              />
             );
           })}
         </Routes>

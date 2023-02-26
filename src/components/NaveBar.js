@@ -32,14 +32,18 @@ const NavBar = () => {
               {isLoggedIn ? "Logout" : "Login"}
             </button>
           </li>
-          <li className="nav-item me-2">
-            <NavLink
-              className={(isActive) => "nav-link" + (!isActive ? "active" : "")}
-              to="/admin"
-            >
-              Admin
-            </NavLink>
-          </li>
+          {isLoggedIn ? (
+            <li className="nav-item me-2">
+              <NavLink
+                className={(isActive) =>
+                  "nav-link" + (!isActive ? "active" : "")
+                }
+                to="/admin"
+              >
+                Admin
+              </NavLink>
+            </li>
+          ) : null}
           <li className="nav-item">
             <NavLink
               className={(isActive) => "nav-link" + (!isActive ? "active" : "")}
