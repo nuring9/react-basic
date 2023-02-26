@@ -4,12 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
-import Toast from "./Toast";
-
-import useToast from "../hooks/toast";
-
-const BlogForm = ({ editing }) => {
-  const [toasts, addToast, deleteToast] = useToast();
+const BlogForm = ({ editing, addToast }) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -107,7 +102,6 @@ const BlogForm = ({ editing }) => {
 
   return (
     <div>
-      <Toast toasts={toasts} deleteToast={deleteToast} />
       <h1>{editing ? "Edit" : "Create"} a blog post</h1>
       <div className="mb-3">
         <label className="form-label">Title</label>

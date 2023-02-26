@@ -11,6 +11,8 @@ import Pagination from "./Pagination";
 import Toast from "./Toast";
 import useToast from "../hooks/toast";
 
+import { useSelector } from "react-redux";
+
 const BlogList = ({ isAdmin }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,6 +27,11 @@ const BlogList = ({ isAdmin }) => {
   const [numberOfPages, setNumberOfPages] = useState(0);
 
   const [searchText, setSearchText] = useState("");
+
+  const toasts1 = useSelector((state) => {
+    return state.toast.toasts;
+  });
+  console.log(toasts1);
 
   const [toasts, addToast, deleteToast] = useToast();
 
