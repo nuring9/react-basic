@@ -4,7 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
-const BlogForm = ({ editing, addToast }) => {
+import useToast from "../hooks/toast";
+
+const BlogForm = ({ editing }) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -19,6 +21,8 @@ const BlogForm = ({ editing, addToast }) => {
 
   const [titleError, setTitleError] = useState(false);
   const [bodyError, setBodyError] = useState(false);
+
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (editing) {
@@ -94,7 +98,7 @@ const BlogForm = ({ editing, addToast }) => {
               type: "success",
               text: "Successfully created!",
             });
-            // navigate("/admin");
+            navigate("/admin");
           });
       }
     }
