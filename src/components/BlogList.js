@@ -25,6 +25,8 @@ const BlogList = ({ isAdmin }) => {
 
   const [searchText, setSearchText] = useState("");
 
+  const [error, setError] = useState("");
+
   const { addToast } = useToast();
 
   const limit = 5;
@@ -61,6 +63,14 @@ const BlogList = ({ isAdmin }) => {
           setNumberOfPosts(res.headers["x-total-count"]);
           setPosts(res.data);
           setLoading(false);
+        })
+        .catch((e) => {
+          setError("Someting went wrong in database");
+          setLoading(false);
+          addToast({
+            type: "danger",
+            text: "Something went wrong",
+          });
         });
     },
     [isAdmin, searchText]
@@ -116,6 +126,10 @@ const BlogList = ({ isAdmin }) => {
       getPosts(1);
     }
   };
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
