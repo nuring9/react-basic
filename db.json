@@ -142,17 +142,10 @@
     },
     {
       "title": "ㄴㅇㄹㅁ",
-      "body": "ㄴㅇㅁㄹ",
+      "body": "ㄴㅇㅁㄹsdf",
       "createdAt": 1677423200371,
       "publish": true,
       "id": 21
-    },
-    {
-      "title": "asdf",
-      "body": "sadf",
-      "createdAt": 1677423534058,
-      "publish": false,
-      "id": 22
     }
   ]
 }
