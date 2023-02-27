@@ -66,11 +66,11 @@ const BlogList = ({ isAdmin }) => {
         })
         .catch((e) => {
           setError("Someting went wrong in database");
-          setLoading(false);
           addToast({
             type: "danger",
             text: "Something went wrong",
           });
+          setLoading(false);
         });
     },
     [isAdmin, searchText]
@@ -83,13 +83,22 @@ const BlogList = ({ isAdmin }) => {
 
   const deleteBlog = (e, id) => {
     e.stopPropagation();
-    axios.delete(`http://localhost:3001/posts/${id}`).then((res) => {
-      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
-      addToast({
-        text: "Successfully deleted",
-        type: "success",
+
+    axios
+      .delete(`http://localhost:3001/posts/${id}`)
+      .then((res) => {
+        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+        addToast({
+          text: "Successfully deleted",
+          type: "success",
+        });
+      })
+      .catch((e) => {
+        addToast({
+          type: "danger",
+          text: "The blog could not be deleted.",
+        });
       });
-    });
   };
 
   if (loading) {

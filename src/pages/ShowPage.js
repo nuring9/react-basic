@@ -3,19 +3,33 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useSelector } from "react-redux";
+import useToast from "../hooks/toast";
 
 const ShowPage = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const { addToast } = useToast();
+  const [error, setError] = useState("");
+
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const getPost = (id) => {
-    axios.get(`http://localhost:3001/posts/${id}`).then((res) => {
-      setPost(res.data);
-      setLoading(false);
-    });
+    axios
+      .get(`http://localhost:3001/posts/${id}`)
+      .then((res) => {
+        setPost(res.data);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setError("Someting went wrong in database");
+        addToast({
+          type: "danger",
+          text: "Something went wrong in db",
+        });
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -29,6 +43,11 @@ const ShowPage = () => {
   if (loading) {
     return <LoadingSpinner />;
   }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <div>
       <div className="d-flex">
