@@ -106,31 +106,28 @@ const BlogList = ({ isAdmin }) => {
     return <LoadingSpinner />;
   }
 
-  const renderBlogList = () => {
-    return (
-      posts &&
-      posts.map((post) => {
-        return (
-          <Card
-            key={post.id}
-            title={post.title}
-            onClick={() => navigate(`/blogs/${post.id}`)}
-          >
-            {isAdmin ? (
-              <div>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={(e) => deleteBlog(e, post.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            ) : null}
-          </Card>
-        );
-      })
-    );
-  };
+  // const renderBlogList = () => {
+  //   return posts && posts.map((post) => {
+  //     return (
+  //       <Card
+  //         key={post.id}
+  //         title={post.title}
+  //         onClick={() => navigate(`/blogs/${post.id}`)}
+  //       >
+  //         {isAdmin ? (
+  //           <div>
+  //             <button
+  //               className="btn btn-danger btn-sm"
+  //               onClick={(e) => deleteBlog(e, post.id)}
+  //             >
+  //               Delete
+  //             </button>
+  //           </div>
+  //         ) : null}
+  //       </Card>
+  //     );
+  //   });
+  // };
 
   const onSearch = (e) => {
     if (e.key === "Enter") {
