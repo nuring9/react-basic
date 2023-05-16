@@ -17,7 +17,7 @@ const ShowPage = () => {
 
   const getPost = (id) => {
     axios
-      .get(`http://localhost:3001/posts/${id}`)
+      .get(`${process.env.REACT_BASIC_DB}/posts/${id}`)
       .then((res) => {
         setPost(res.data);
         setLoading(false);

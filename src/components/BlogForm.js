@@ -30,7 +30,7 @@ const BlogForm = ({ editing }) => {
   useEffect(() => {
     if (editing) {
       axios
-        .get(`http://localhost:3001/posts/${id}`)
+        .get(`${process.env.REACT_BASIC_DB}/posts/${id}`)
         .then((res) => {
           setTitle(res.data.title);
           setOriginalTitle(res.data.title);
@@ -95,7 +95,7 @@ const BlogForm = ({ editing }) => {
     if (validateForm()) {
       if (editing) {
         axios
-          .patch(`http://localhost:3001/posts/${id}`, {
+          .patch(`${process.env.REACT_BASIC_DB}/posts/${id}`, {
             title,
             body,
             publish,
@@ -109,7 +109,7 @@ const BlogForm = ({ editing }) => {
           .then((res) => navigate(`/blogs/${id}`));
       } else {
         axios
-          .post("http://localhost:3001/posts", {
+          .post(`${process.env.REACT_BASIC_DB}/posts`, {
             title,
             body,
             createdAt: Date.now(),
