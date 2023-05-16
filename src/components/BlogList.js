@@ -56,7 +56,7 @@ const BlogList = ({ isAdmin }) => {
       }
 
       axios
-        .get(`${process.env.REACT_BASIC_DB}/posts`, {
+        .get(`https://energetic-weak-produce.glitch.me/posts`, {
           params,
         })
         .then((res) => {

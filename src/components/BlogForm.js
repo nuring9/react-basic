@@ -95,7 +95,7 @@ const BlogForm = ({ editing }) => {
     if (validateForm()) {
       if (editing) {
         axios
-          .patch(`${process.env.REACT_BASIC_DB}/posts/${id}`, {
+          .patch(`https://energetic-weak-produce.glitch.me/posts/${id}`, {
             title,
             body,
             publish,
@@ -109,7 +109,7 @@ const BlogForm = ({ editing }) => {
           .then((res) => navigate(`/blogs/${id}`));
       } else {
         axios
-          .post(`${process.env.REACT_BASIC_DB}/posts`, {
+          .post(`https://energetic-weak-produce.glitch.me/posts`, {
             title,
             body,
             createdAt: Date.now(),
