@@ -76,7 +76,7 @@ const Map = () => {
 
   const mapStyle = {
     width: "100%",
-    height: "40vw",
+    height: "30vw",
   };
 
   return (
