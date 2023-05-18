@@ -1,7 +1,11 @@
+import Map from "../components/Map";
+
 const HomePage = () => {
   return (
     <>
-      <h1>프로젝트로 배우는 리액트</h1>
+      <h1>리액트로 만드는 간단한 블로그</h1>
+      <p>현재 내 위치 API 연결</p>
+      <Map />
     </>
   );
 };
