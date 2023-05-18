@@ -56,7 +56,7 @@ const BlogList = ({ isAdmin }) => {
       }
 
       axios
-        .get(`https://energetic-weak-produce.glitch.me/posts`, {
+        .get(`${process.env.REACT_APP_BASIC_DB}/posts`, {
           params,
         })
         .then((res) => {
@@ -85,7 +85,7 @@ const BlogList = ({ isAdmin }) => {
     e.stopPropagation();
 
     axios
-      .delete(`${process.env.REACT_BASIC_DB}/posts/${id}`)
+      .delete(`${process.env.REACT_APP_BASIC_DB}/posts/${id}`)
       .then((res) => {
         // setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
         getPosts(1);

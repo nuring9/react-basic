@@ -17,7 +17,7 @@ const ShowPage = () => {
 
   const getPost = (id) => {
     axios
-      .get(`https://energetic-weak-produce.glitch.me/posts/posts/${id}`)
+      .get(`${process.env.REACT_APP_BASIC_DB}/posts/${id}`)
       .then((res) => {
         setPost(res.data);
         setLoading(false);
