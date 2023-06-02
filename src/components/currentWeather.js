@@ -3,8 +3,6 @@ const currentWeather = () => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    // console.log(`You live in ${latitude} and ${longitude}`);
-
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_OPENWEATHER_KEY}&units=metric`
     )

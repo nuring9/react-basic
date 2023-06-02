@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import useGeoLocation from "../hooks/useGeoLocation";
+import useGeoLocations from "../hooks/useGeoLocation";
 
 const Map = () => {
   const mapRef = useRef(null);
   const API_KEY = process.env.REACT_APP_OPENWEATHER_KEY;
 
-  const location = useGeoLocation();
+  const location = useGeoLocations();
 
   const latitude = location.coordinates.lat;
   const longitude = location.coordinates.lng;
